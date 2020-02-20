@@ -2695,19 +2695,33 @@ unsigned short I2C_Master_Read(unsigned short a);
 void I2C_Slave_Init(uint8_t address);
 # 34 "I2C_Slave1.c" 2
 
+# 1 "./ADC_Init.h" 1
+# 12 "./ADC_Init.h"
+# 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 1 3
+# 12 "./ADC_Init.h" 2
+
+
+
+void initADC (uint8_t analog);
+# 35 "I2C_Slave1.c" 2
+
 
 
 
 
 
 uint8_t z;
-uint8_t dato;
+uint8_t dato, ready = 0, adc1 = 0;
 
 
 
 
 
 void __attribute__((picinterrupt(("")))) isr(void){
+    if(ADCON0bits.GO_DONE == 0){
+        ready = 1;
+        PIR1bits.ADIF = 0;
+    }
    if(PIR1bits.SSPIF == 1){
 
         SSPCONbits.CKP = 0;
@@ -2737,29 +2751,32 @@ void __attribute__((picinterrupt(("")))) isr(void){
             _delay((unsigned long)((250)*(4000000/4000000.0)));
             while(SSPSTATbits.BF);
         }
-
         PIR1bits.SSPIF = 0;
     }
 }
 
-
-
 void main(void) {
-    ANSEL = 0;
+    ANSEL = 0b00000001;
     ANSELH = 0;
 
+    TRISA = 0b00000001;
     TRISB = 0;
     TRISD = 0;
 
+    PORTA = 0;
     PORTB = 0;
     PORTD = 0;
+
     I2C_Slave_Init(0x50);
-
-
+    initADC(0);
 
     while(1){
-        PORTB = ~PORTB;
-       _delay((unsigned long)((500)*(4000000/4000.0)));
+        if(ready){
+            PORTB = ADRESH;
+            ready = 0;
+            ADCON0bits.GO_DONE = 1;
+        }
+
     }
     return;
 }

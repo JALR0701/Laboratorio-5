@@ -60,13 +60,13 @@ void main(void) {
         I2C_Master_Write(0x50);
         I2C_Master_Write(10);
         I2C_Master_Stop();
-        __delay_ms(200);
+        __delay_ms(100);
        
         I2C_Master_Start();
         I2C_Master_Write(0x51);
         PORTA = I2C_Master_Read(0);
         I2C_Master_Stop();
-        __delay_ms(200);
+        __delay_ms(100);
            
     }
     return;

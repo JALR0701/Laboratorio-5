@@ -32,19 +32,24 @@
 #include <stdint.h>
 #include <pic16f887.h>
 #include "I2C_Init.h"
+#include "ADC_Init.h"
 #include <xc.h>
 //*****************************************************************************
 // Definición de variables
 //*****************************************************************************
 #define _XTAL_FREQ 4000000
 uint8_t z;
-uint8_t dato;
+uint8_t dato, ready = 0, adc1 = 0;
 //*****************************************************************************
 // Definición de funciones para que se puedan colocar después del main de lo 
 // contrario hay que colocarlos todas las funciones antes del main
 //*****************************************************************************
 
 void __interrupt() isr(void){
+    if(ADCON0bits.GO_DONE == 0){//Si se realizo una conversion levantamos la bandera (se ejecua en el loop)
+        ready = 1;
+        PIR1bits.ADIF = 0;
+    }
    if(PIR1bits.SSPIF == 1){ 
 
         SSPCONbits.CKP = 0;
@@ -73,30 +78,33 @@ void __interrupt() isr(void){
             SSPCONbits.CKP = 1;
             __delay_us(250);
             while(SSPSTATbits.BF);
-        }
-       
+        }       
         PIR1bits.SSPIF = 0;    
     }
 }
-//*****************************************************************************
-// Main
-//*****************************************************************************
+
 void main(void) {
-    ANSEL = 0;
+    ANSEL = 0b00000001;
     ANSELH = 0;
     
+    TRISA = 0b00000001;
     TRISB = 0;
     TRISD = 0;
     
+    PORTA = 0;
     PORTB = 0;
     PORTD = 0;
+    
     I2C_Slave_Init(0x50);
-    //*************************************************************************
-    // Loop infinito
-    //*************************************************************************
+    initADC(0);
+
     while(1){
-        PORTB = ~PORTB;
-       __delay_ms(500);
+        if(ready){  //Guardamos el valor de la conversion
+            PORTB = ADRESH;
+            ready = 0;
+            ADCON0bits.GO_DONE = 1;
+        }
+
     }
     return;
 }
