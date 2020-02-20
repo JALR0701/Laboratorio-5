@@ -32,12 +32,14 @@
 #include <stdint.h>
 #include <pic16f887.h>
 #include "I2C_Init.h"
+#include "LCD_Init.h"
 #include <xc.h>
 //*****************************************************************************
 // Definición de variables
 //*****************************************************************************
 #define _XTAL_FREQ 4000000
 
+uint8_t adc = 0;
 //*****************************************************************************
 // Definición de funciones para que se puedan colocar después del main de lo 
 // contrario hay que colocarlos todas las funciones antes del main
@@ -53,20 +55,31 @@ void main(void) {
     PORTA = 0;
     PORTB = 0;
     PORTD = 0;
+    initLCD(); //Inicializar LCD
     I2C_Master_Init(100000);
+    lcd_clr();//Limpiar LCD
+    lcd_set_cursor(1,1);//Posicionar cursor
+    lcd_write_string ("ADC");//Escribir texto
+    lcd_set_cursor(7,1);
+    lcd_write_string ("COUNT");
+    lcd_set_cursor(13,1);
+    lcd_write_string ("SNSR");
     
     while(1){
+//        lcd_set_cursor(1,2);
+//        lcd_write_int(adc);
+        
         I2C_Master_Start();
         I2C_Master_Write(0x50);
         I2C_Master_Write(10);
         I2C_Master_Stop();
-        __delay_ms(100);
+        __delay_ms(250);
        
         I2C_Master_Start();
         I2C_Master_Write(0x51);
-        PORTA = I2C_Master_Read(0);
+        PORTB = I2C_Master_Read(0);
         I2C_Master_Stop();
-        __delay_ms(100);
+        __delay_ms(250);
            
     }
     return;

@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=I2C_Master.c I2C_Init.c
+SOURCEFILES_QUOTED_IF_SPACED=I2C_Master.c I2C_Init.c LCD_Init.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/I2C_Master.p1 ${OBJECTDIR}/I2C_Init.p1
-POSSIBLE_DEPFILES=${OBJECTDIR}/I2C_Master.p1.d ${OBJECTDIR}/I2C_Init.p1.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/I2C_Master.p1 ${OBJECTDIR}/I2C_Init.p1 ${OBJECTDIR}/LCD_Init.p1
+POSSIBLE_DEPFILES=${OBJECTDIR}/I2C_Master.p1.d ${OBJECTDIR}/I2C_Init.p1.d ${OBJECTDIR}/LCD_Init.p1.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/I2C_Master.p1 ${OBJECTDIR}/I2C_Init.p1
+OBJECTFILES=${OBJECTDIR}/I2C_Master.p1 ${OBJECTDIR}/I2C_Init.p1 ${OBJECTDIR}/LCD_Init.p1
 
 # Source Files
-SOURCEFILES=I2C_Master.c I2C_Init.c
+SOURCEFILES=I2C_Master.c I2C_Init.c LCD_Init.c
 
 
 
@@ -110,6 +110,14 @@ ${OBJECTDIR}/I2C_Init.p1: I2C_Init.c  nbproject/Makefile-${CND_CONF}.mk
 	@-${MV} ${OBJECTDIR}/I2C_Init.d ${OBJECTDIR}/I2C_Init.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/I2C_Init.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
+${OBJECTDIR}/LCD_Init.p1: LCD_Init.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/LCD_Init.p1.d 
+	@${RM} ${OBJECTDIR}/LCD_Init.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1    -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/LCD_Init.p1 LCD_Init.c 
+	@-${MV} ${OBJECTDIR}/LCD_Init.d ${OBJECTDIR}/LCD_Init.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/LCD_Init.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
 else
 ${OBJECTDIR}/I2C_Master.p1: I2C_Master.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
@@ -126,6 +134,14 @@ ${OBJECTDIR}/I2C_Init.p1: I2C_Init.c  nbproject/Makefile-${CND_CONF}.mk
 	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c    -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/I2C_Init.p1 I2C_Init.c 
 	@-${MV} ${OBJECTDIR}/I2C_Init.d ${OBJECTDIR}/I2C_Init.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/I2C_Init.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/LCD_Init.p1: LCD_Init.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/LCD_Init.p1.d 
+	@${RM} ${OBJECTDIR}/LCD_Init.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c    -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/LCD_Init.p1 LCD_Init.c 
+	@-${MV} ${OBJECTDIR}/LCD_Init.d ${OBJECTDIR}/LCD_Init.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/LCD_Init.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 endif
 

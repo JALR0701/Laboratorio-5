@@ -2694,7 +2694,35 @@ unsigned short I2C_Master_Read(unsigned short a);
 
 void I2C_Slave_Init(uint8_t address);
 # 34 "I2C_Master.c" 2
-# 46 "I2C_Master.c"
+
+# 1 "./LCD_Init.h" 1
+# 12 "./LCD_Init.h"
+# 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 1 3
+# 12 "./LCD_Init.h" 2
+
+
+
+void initLCD (void);
+void lcd_cmd (uint8_t command);
+void lcd_clr (void);
+void lcd_set_cursor(uint8_t posy, uint8_t posx);
+void lcd_write_char(char var);
+void lcd_write_string(char *var);
+void lcd_write_int(uint8_t numero);
+# 35 "I2C_Master.c" 2
+
+
+
+
+
+
+
+uint8_t adc = 0;
+
+
+
+
+
 void main(void) {
 
     ANSEL = 0;
@@ -2705,20 +2733,31 @@ void main(void) {
     PORTA = 0;
     PORTB = 0;
     PORTD = 0;
+    initLCD();
     I2C_Master_Init(100000);
+    lcd_clr();
+    lcd_set_cursor(1,1);
+    lcd_write_string ("ADC");
+    lcd_set_cursor(7,1);
+    lcd_write_string ("COUNT");
+    lcd_set_cursor(13,1);
+    lcd_write_string ("SNSR");
 
     while(1){
+
+
+
         I2C_Master_Start();
         I2C_Master_Write(0x50);
         I2C_Master_Write(10);
         I2C_Master_Stop();
-        _delay((unsigned long)((100)*(4000000/4000.0)));
+        _delay((unsigned long)((250)*(4000000/4000.0)));
 
         I2C_Master_Start();
         I2C_Master_Write(0x51);
-        PORTA = I2C_Master_Read(0);
+        PORTB = I2C_Master_Read(0);
         I2C_Master_Stop();
-        _delay((unsigned long)((100)*(4000000/4000.0)));
+        _delay((unsigned long)((250)*(4000000/4000.0)));
 
     }
     return;
