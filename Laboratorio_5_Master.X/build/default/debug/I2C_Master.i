@@ -2694,79 +2694,28 @@ unsigned short I2C_Master_Read(unsigned short a);
 
 void I2C_Slave_Init(uint8_t address);
 # 34 "I2C_Master.c" 2
-
-# 1 "./LCD_Init.h" 1
-# 12 "./LCD_Init.h"
-# 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 1 3
-# 12 "./LCD_Init.h" 2
-
-
-
-void initLCD (void);
-void lcd_cmd (uint8_t command);
-void lcd_clr (void);
-void lcd_set_cursor(uint8_t posy, uint8_t posx);
-void lcd_write_char(char var);
-void lcd_write_string(char *var);
-void lcd_write_int(uint8_t numero);
-# 35 "I2C_Master.c" 2
-
-
-
-
-
-
-
-uint8_t enteroadc = 0, decimaladc = 0;
-float adc = 0, decimalfloatadc = 0;
-
-
-
-
-
+# 49 "I2C_Master.c"
 void main(void) {
-
     ANSEL = 0;
     ANSELH = 0;
-    TRISA = 0;
     TRISB = 0;
     TRISD = 0;
-    PORTA = 0;
     PORTB = 0;
     PORTD = 0;
-    initLCD();
     I2C_Master_Init(100000);
-    lcd_clr();
-    lcd_set_cursor(2,1);
-    lcd_write_string ("ADC");
-    lcd_set_cursor(7,1);
-    lcd_write_string ("COUNT");
-    lcd_set_cursor(13,1);
-    lcd_write_string ("SNSR");
-
     while(1){
+        I2C_Master_Start();
+        I2C_Master_Write(0x50);
+        I2C_Master_Write(PORTB);
+        I2C_Master_Stop();
+        _delay((unsigned long)((200)*(4000000/4000.0)));
 
         I2C_Master_Start();
         I2C_Master_Write(0x51);
-        adc = I2C_Master_Read(0);
+        PORTD = I2C_Master_Read(0);
         I2C_Master_Stop();
-        _delay((unsigned long)((10)*(4000000/4000.0)));
-
-        adc = adc * 5/255;
-        enteroadc = adc;
-        decimalfloatadc = (adc - enteroadc)*100;
-        decimaladc = decimalfloatadc;
-
-        lcd_set_cursor(1,2);
-        lcd_write_int(enteroadc);
-        lcd_write_char('.');
-        if (decimaladc >= 10){
-            lcd_write_int(decimaladc);
-        }else{
-            lcd_write_char('0');
-            lcd_write_int(decimaladc);
-        }
-        lcd_write_char('V');
+        _delay((unsigned long)((200)*(4000000/4000.0)));
+        PORTB++;
     }
     return;
 }

@@ -39,7 +39,8 @@
 //*****************************************************************************
 #define _XTAL_FREQ 4000000
 
-uint8_t adc = 0;
+uint8_t enteroadc = 0, decimaladc = 0;
+float adc = 0, decimalfloatadc = 0;
 //*****************************************************************************
 // Definición de funciones para que se puedan colocar después del main de lo 
 // contrario hay que colocarlos todas las funciones antes del main
@@ -58,29 +59,36 @@ void main(void) {
     initLCD(); //Inicializar LCD
     I2C_Master_Init(100000);
     lcd_clr();//Limpiar LCD
-    lcd_set_cursor(1,1);//Posicionar cursor
+    lcd_set_cursor(2,1);//Posicionar cursor
     lcd_write_string ("ADC");//Escribir texto
     lcd_set_cursor(7,1);
     lcd_write_string ("COUNT");
     lcd_set_cursor(13,1);
     lcd_write_string ("SNSR");
     
-    while(1){
-//        lcd_set_cursor(1,2);
-//        lcd_write_int(adc);
+    while(1){        
         
         I2C_Master_Start();
-        I2C_Master_Write(0x50);
-        I2C_Master_Write(10);
-        I2C_Master_Stop();
-        __delay_ms(250);
-       
-        I2C_Master_Start();
         I2C_Master_Write(0x51);
-        PORTB = I2C_Master_Read(0);
+        adc = I2C_Master_Read(0);
         I2C_Master_Stop();
-        __delay_ms(250);
-           
+        __delay_ms(10);
+        
+        adc = adc * 5/255;
+        enteroadc = adc;
+        decimalfloatadc = (adc - enteroadc)*100;
+        decimaladc = decimalfloatadc;
+        
+        lcd_set_cursor(1,2);
+        lcd_write_int(enteroadc);
+        lcd_write_char('.');
+        if (decimaladc >= 10){
+            lcd_write_int(decimaladc);
+        }else{
+            lcd_write_char('0');
+            lcd_write_int(decimaladc);
+        }
+        lcd_write_char('V');
     }
     return;
 }
