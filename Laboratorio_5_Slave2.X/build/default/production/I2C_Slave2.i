@@ -1,4 +1,4 @@
-# 1 "I2C_Master.c"
+# 1 "I2C_Slave2.c"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 288 "<built-in>" 3
@@ -6,8 +6,8 @@
 # 1 "<built-in>" 2
 # 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\language_support.h" 1 3
 # 2 "<built-in>" 2
-# 1 "I2C_Master.c" 2
-# 11 "I2C_Master.c"
+# 1 "I2C_Slave2.c" 2
+# 11 "I2C_Slave2.c"
 #pragma config FOSC = INTRC_NOCLKOUT
 #pragma config WDTE = OFF
 #pragma config PWRTE = OFF
@@ -163,7 +163,7 @@ typedef int16_t intptr_t;
 
 
 typedef uint16_t uintptr_t;
-# 32 "I2C_Master.c" 2
+# 32 "I2C_Slave2.c" 2
 
 # 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\pic16f887.h" 1 3
 # 44 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\pic16f887.h" 3
@@ -2576,7 +2576,7 @@ extern volatile __bit nW __attribute__((address(0x4A2)));
 
 
 extern volatile __bit nWRITE __attribute__((address(0x4A2)));
-# 33 "I2C_Master.c" 2
+# 33 "I2C_Slave2.c" 2
 
 # 1 "./I2C_Init.h" 1
 # 14 "./I2C_Init.h"
@@ -2693,99 +2693,86 @@ unsigned short I2C_Master_Read(unsigned short a);
 
 
 void I2C_Slave_Init(uint8_t address);
-# 34 "I2C_Master.c" 2
-
-# 1 "./LCD_Init.h" 1
-# 12 "./LCD_Init.h"
-# 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 1 3
-# 12 "./LCD_Init.h" 2
-
-
-
-void initLCD (void);
-void lcd_cmd (uint8_t command);
-void lcd_clr (void);
-void lcd_set_cursor(uint8_t posy, uint8_t posx);
-void lcd_write_char(char var);
-void lcd_write_string(char *var);
-void lcd_write_int(uint8_t numero);
-# 35 "I2C_Master.c" 2
+# 34 "I2C_Slave2.c" 2
 
 
 
 
 
 
-
-uint8_t enteroadc = 0, decimaladc = 0, count = 0;
-float adc = 0, decimalfloatadc = 0;
-
+uint8_t z;
+uint8_t dato;
 
 
 
+
+
+void __attribute__((picinterrupt(("")))) isr(void){
+    if(INTCONbits.RBIF == 1 && PORTBbits.RB1 == 1){
+        PORTA++;
+        if(PORTA > 15){
+            PORTA = 0;
+        }
+    }
+    if(INTCONbits.RBIF == 1 && PORTBbits.RB0 == 1){
+        if(PORTA == 0){
+            PORTA = 15;
+        }else{
+            PORTA--;
+        }
+    }
+    INTCONbits.RBIF = 0;
+   if(PIR1bits.SSPIF == 1){
+
+        SSPCONbits.CKP = 0;
+
+        if ((SSPCONbits.SSPOV) || (SSPCONbits.WCOL)){
+            z = SSPBUF;
+            SSPCONbits.SSPOV = 0;
+            SSPCONbits.WCOL = 0;
+            SSPCONbits.CKP = 1;
+        }
+
+        if(!SSPSTATbits.D_nA && !SSPSTATbits.R_nW) {
+
+            z = SSPBUF;
+
+            PIR1bits.SSPIF = 0;
+            SSPCONbits.CKP = 1;
+            while(!SSPSTATbits.BF);
+            PORTD = SSPBUF;
+            _delay((unsigned long)((250)*(4000000/4000000.0)));
+
+        }else if(!SSPSTATbits.D_nA && SSPSTATbits.R_nW){
+            z = SSPBUF;
+            BF = 0;
+            SSPBUF = PORTA;
+            SSPCONbits.CKP = 1;
+            _delay((unsigned long)((250)*(4000000/4000000.0)));
+            while(SSPSTATbits.BF);
+        }
+        PIR1bits.SSPIF = 0;
+    }
+}
 
 void main(void) {
-
     ANSEL = 0;
     ANSELH = 0;
+
     TRISA = 0;
-    TRISB = 0;
+    TRISB = 0b00000011;
     TRISD = 0;
+
+    IOCB = 0b00000011;
+
     PORTA = 0;
     PORTB = 0;
     PORTD = 0;
-    initLCD();
-    I2C_Master_Init(100000);
-    lcd_clr();
-    lcd_set_cursor(2,1);
-    lcd_write_string ("ADC");
-    lcd_set_cursor(7,1);
-    lcd_write_string ("COUNT");
-    lcd_set_cursor(13,1);
-    lcd_write_string ("SNSR");
+
+    I2C_Slave_Init(0x60);
 
     while(1){
 
-        I2C_Master_Start();
-        I2C_Master_Write(0x51);
-        adc = I2C_Master_Read(0);
-        I2C_Master_Stop();
-        _delay((unsigned long)((10)*(4000000/4000.0)));
-
-        I2C_Master_Start();
-        I2C_Master_Write(0x61);
-        count = I2C_Master_Read(0);
-        I2C_Master_Stop();
-        _delay((unsigned long)((10)*(4000000/4000.0)));
-
-        adc = adc * 5/255;
-        enteroadc = adc;
-        decimalfloatadc = (adc - enteroadc)*100;
-        decimaladc = decimalfloatadc;
-
-        lcd_set_cursor(1,2);
-        lcd_write_int(enteroadc);
-        lcd_write_char('.');
-        if (decimaladc >= 10){
-            lcd_write_int(decimaladc);
-        }else{
-            lcd_write_char('0');
-            lcd_write_int(decimaladc);
-        }
-        lcd_write_char('V');
-
-        if(count < 10){
-            lcd_set_cursor(8,2);
-            lcd_write_string("00");
-            lcd_write_int(count);
-        } else if(count >= 10 && count < 100){
-            lcd_set_cursor(8,2);
-            lcd_write_string("0");
-            lcd_write_int(count);
-        }else{
-            lcd_set_cursor(8,2);
-            lcd_write_int(count);
-        }
     }
     return;
 }

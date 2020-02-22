@@ -1,4 +1,4 @@
-# 1 "I2C_Master.c"
+# 1 "I2C_Init.c"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 288 "<built-in>" 3
@@ -6,40 +6,39 @@
 # 1 "<built-in>" 2
 # 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\language_support.h" 1 3
 # 2 "<built-in>" 2
-# 1 "I2C_Master.c" 2
-# 11 "I2C_Master.c"
-#pragma config FOSC = INTRC_NOCLKOUT
-#pragma config WDTE = OFF
-#pragma config PWRTE = OFF
-#pragma config MCLRE = OFF
-#pragma config CP = OFF
-#pragma config CPD = OFF
-#pragma config BOREN = OFF
-#pragma config IESO = OFF
-#pragma config FCMEN = OFF
-#pragma config LVP = OFF
+# 1 "I2C_Init.c" 2
+# 1 "./I2C_Init.h" 1
+# 14 "./I2C_Init.h"
+# 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\xc.h" 1 3
+# 18 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\xc.h" 3
+extern const char __xc8_OPTIM_SPEED;
 
+extern double __fpnormalize(double);
 
-#pragma config BOR4V = BOR40V
-#pragma config WRT = OFF
 
 
+# 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\xc8debug.h" 1 3
+# 13 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\xc8debug.h" 3
+#pragma intrinsic(__builtin_software_breakpoint)
+extern void __builtin_software_breakpoint(void);
+# 23 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\xc.h" 2 3
 
 
 
 
+# 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\pic.h" 1 3
 
 
-# 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 1 3
-# 13 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
-typedef signed char int8_t;
 
 
+# 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\htc.h" 1 3
 
 
 
+# 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\xc.h" 1 3
+# 4 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\htc.h" 2 3
+# 5 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\pic.h" 2 3
 
-typedef signed int int16_t;
 
 
 
@@ -47,124 +46,8 @@ typedef signed int int16_t;
 
 
 
-typedef __int24 int24_t;
-
-
-
-
-
-
-
-typedef signed long int int32_t;
-# 52 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
-typedef unsigned char uint8_t;
-
-
-
-
-
-typedef unsigned int uint16_t;
-
-
-
-
-
-
-typedef __uint24 uint24_t;
-
-
-
-
-
-
-typedef unsigned long int uint32_t;
-# 88 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
-typedef signed char int_least8_t;
-
-
-
-
-
-
-
-typedef signed int int_least16_t;
-# 109 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
-typedef __int24 int_least24_t;
-# 118 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
-typedef signed long int int_least32_t;
-# 136 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
-typedef unsigned char uint_least8_t;
-
-
-
-
-
-
-typedef unsigned int uint_least16_t;
-# 154 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
-typedef __uint24 uint_least24_t;
-
-
-
-
-
-
-
-typedef unsigned long int uint_least32_t;
-# 181 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
-typedef signed char int_fast8_t;
-
-
-
-
-
-
-typedef signed int int_fast16_t;
-# 200 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
-typedef __int24 int_fast24_t;
-
-
-
-
-
-
-
-typedef signed long int int_fast32_t;
-# 224 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
-typedef unsigned char uint_fast8_t;
-
-
-
-
-
-typedef unsigned int uint_fast16_t;
-# 240 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
-typedef __uint24 uint_fast24_t;
-
-
-
-
-
-
-typedef unsigned long int uint_fast32_t;
-# 268 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
-typedef int32_t intmax_t;
-# 282 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
-typedef uint32_t uintmax_t;
-
-
-
-
-
-
-typedef int16_t intptr_t;
-
-
-
-
-typedef uint16_t uintptr_t;
-# 32 "I2C_Master.c" 2
-
+# 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\pic_chip_select.h" 1 3
+# 2703 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\pic_chip_select.h" 3
 # 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\pic16f887.h" 1 3
 # 44 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\pic16f887.h" 3
 # 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\__at.h" 1 3
@@ -2576,48 +2459,7 @@ extern volatile __bit nW __attribute__((address(0x4A2)));
 
 
 extern volatile __bit nWRITE __attribute__((address(0x4A2)));
-# 33 "I2C_Master.c" 2
-
-# 1 "./I2C_Init.h" 1
-# 14 "./I2C_Init.h"
-# 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\xc.h" 1 3
-# 18 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\xc.h" 3
-extern const char __xc8_OPTIM_SPEED;
-
-extern double __fpnormalize(double);
-
-
-
-# 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\xc8debug.h" 1 3
-# 13 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\xc8debug.h" 3
-#pragma intrinsic(__builtin_software_breakpoint)
-extern void __builtin_software_breakpoint(void);
-# 23 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\xc.h" 2 3
-
-
-
-
-# 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\pic.h" 1 3
-
-
-
-
-# 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\htc.h" 1 3
-
-
-
-# 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\xc.h" 1 3
-# 4 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\htc.h" 2 3
-# 5 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\pic.h" 2 3
-
-
-
-
-
-
-
-
-# 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\pic_chip_select.h" 1 3
+# 2703 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\pic_chip_select.h" 2 3
 # 13 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\pic.h" 2 3
 # 30 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\pic.h" 3
 #pragma intrinsic(__nop)
@@ -2655,6 +2497,138 @@ extern __bank0 __bit __timeout;
 
 
 # 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 1 3
+# 13 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
+typedef signed char int8_t;
+
+
+
+
+
+
+typedef signed int int16_t;
+
+
+
+
+
+
+
+typedef __int24 int24_t;
+
+
+
+
+
+
+
+typedef signed long int int32_t;
+# 52 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
+typedef unsigned char uint8_t;
+
+
+
+
+
+typedef unsigned int uint16_t;
+
+
+
+
+
+
+typedef __uint24 uint24_t;
+
+
+
+
+
+
+typedef unsigned long int uint32_t;
+# 88 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
+typedef signed char int_least8_t;
+
+
+
+
+
+
+
+typedef signed int int_least16_t;
+# 109 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
+typedef __int24 int_least24_t;
+# 118 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
+typedef signed long int int_least32_t;
+# 136 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
+typedef unsigned char uint_least8_t;
+
+
+
+
+
+
+typedef unsigned int uint_least16_t;
+# 154 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
+typedef __uint24 uint_least24_t;
+
+
+
+
+
+
+
+typedef unsigned long int uint_least32_t;
+# 181 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
+typedef signed char int_fast8_t;
+
+
+
+
+
+
+typedef signed int int_fast16_t;
+# 200 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
+typedef __int24 int_fast24_t;
+
+
+
+
+
+
+
+typedef signed long int int_fast32_t;
+# 224 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
+typedef unsigned char uint_fast8_t;
+
+
+
+
+
+typedef unsigned int uint_fast16_t;
+# 240 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
+typedef __uint24 uint_fast24_t;
+
+
+
+
+
+
+typedef unsigned long int uint_fast32_t;
+# 268 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
+typedef int32_t intmax_t;
+# 282 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
+typedef uint32_t uintmax_t;
+
+
+
+
+
+
+typedef int16_t intptr_t;
+
+
+
+
+typedef uint16_t uintptr_t;
 # 16 "./I2C_Init.h" 2
 # 25 "./I2C_Init.h"
 void I2C_Master_Init(const unsigned long c);
@@ -2693,23 +2667,20 @@ unsigned short I2C_Master_Read(unsigned short a);
 
 
 void I2C_Slave_Init(uint8_t address);
-# 34 "I2C_Master.c" 2
-
-# 1 "./LCD_Init.h" 1
-# 12 "./LCD_Init.h"
-# 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 1 3
-# 12 "./LCD_Init.h" 2
+# 1 "I2C_Init.c" 2
 
 
 
-void initLCD (void);
-void lcd_cmd (uint8_t command);
-void lcd_clr (void);
-void lcd_set_cursor(uint8_t posy, uint8_t posx);
-void lcd_write_char(char var);
-void lcd_write_string(char *var);
-void lcd_write_int(uint8_t numero);
-# 35 "I2C_Master.c" 2
+
+void I2C_Master_Init(const unsigned long c)
+{
+    SSPCON = 0b00101000;
+    SSPCON2 = 0;
+    SSPADD = (4000000/(4*c))-1;
+    SSPSTAT = 0;
+    TRISCbits.TRISC3 = 1;
+    TRISCbits.TRISC4 = 1;
+}
 
 
 
@@ -2717,75 +2688,77 @@ void lcd_write_int(uint8_t numero);
 
 
 
-uint8_t enteroadc = 0, decimaladc = 0, count = 0;
-float adc = 0, decimalfloatadc = 0;
+void I2C_Master_Wait()
+{
+    while ((SSPSTAT & 0x04) || (SSPCON2 & 0x1F));
+}
+
+
+
+void I2C_Master_Start()
+{
+    I2C_Master_Wait();
+    SSPCON2bits.SEN = 1;
+}
+
+
+
+void I2C_Master_RepeatedStart()
+{
+    I2C_Master_Wait();
+    SSPCON2bits.RSEN = 1;
+}
+
+
+
+void I2C_Master_Stop()
+{
+    I2C_Master_Wait();
+    SSPCON2bits.PEN = 1;
+}
 
 
 
 
 
-void main(void) {
+void I2C_Master_Write(unsigned d)
+{
+    I2C_Master_Wait();
+    SSPBUF = d;
+}
 
-    ANSEL = 0;
-    ANSELH = 0;
-    TRISA = 0;
-    TRISB = 0;
-    TRISD = 0;
-    PORTA = 0;
-    PORTB = 0;
-    PORTD = 0;
-    initLCD();
-    I2C_Master_Init(100000);
-    lcd_clr();
-    lcd_set_cursor(2,1);
-    lcd_write_string ("ADC");
-    lcd_set_cursor(7,1);
-    lcd_write_string ("COUNT");
-    lcd_set_cursor(13,1);
-    lcd_write_string ("SNSR");
 
-    while(1){
 
-        I2C_Master_Start();
-        I2C_Master_Write(0x51);
-        adc = I2C_Master_Read(0);
-        I2C_Master_Stop();
-        _delay((unsigned long)((10)*(4000000/4000.0)));
 
-        I2C_Master_Start();
-        I2C_Master_Write(0x61);
-        count = I2C_Master_Read(0);
-        I2C_Master_Stop();
-        _delay((unsigned long)((10)*(4000000/4000.0)));
-
-        adc = adc * 5/255;
-        enteroadc = adc;
-        decimalfloatadc = (adc - enteroadc)*100;
-        decimaladc = decimalfloatadc;
-
-        lcd_set_cursor(1,2);
-        lcd_write_int(enteroadc);
-        lcd_write_char('.');
-        if (decimaladc >= 10){
-            lcd_write_int(decimaladc);
-        }else{
-            lcd_write_char('0');
-            lcd_write_int(decimaladc);
-        }
-        lcd_write_char('V');
-
-        if(count < 10){
-            lcd_set_cursor(8,2);
-            lcd_write_string("00");
-            lcd_write_int(count);
-        } else if(count >= 10 && count < 100){
-            lcd_set_cursor(8,2);
-            lcd_write_string("0");
-            lcd_write_int(count);
-        }else{
-            lcd_set_cursor(8,2);
-            lcd_write_int(count);
-        }
+unsigned short I2C_Master_Read(unsigned short a)
+{
+    unsigned short temp;
+    I2C_Master_Wait();
+    SSPCON2bits.RCEN = 1;
+    I2C_Master_Wait();
+    temp = SSPBUF;
+    I2C_Master_Wait();
+    if(a == 1){
+        SSPCON2bits.ACKDT = 0;
+    }else{
+        SSPCON2bits.ACKDT = 1;
     }
-    return;
+    SSPCON2bits.ACKEN = 1;
+    return temp;
+}
+
+
+
+void I2C_Slave_Init(uint8_t address)
+{
+    SSPADD = address;
+    SSPCON = 0x36;
+    SSPSTAT = 0x80;
+    SSPCON2 = 0x01;
+    TRISC3 = 1;
+    TRISC4 = 1;
+    GIE = 1;
+    PEIE = 1;
+    SSPIF = 0;
+    SSPIE = 1;
 }

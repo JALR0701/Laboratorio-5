@@ -32,24 +32,33 @@
 #include <stdint.h>
 #include <pic16f887.h>
 #include "I2C_Init.h"
-#include "ADC_Init.h"
 #include <xc.h>
 //*****************************************************************************
 // Definición de variables
 //*****************************************************************************
 #define _XTAL_FREQ 4000000
 uint8_t z;
-uint8_t dato, ready = 0, adc1 = 0;
+uint8_t dato;
 //*****************************************************************************
 // Definición de funciones para que se puedan colocar después del main de lo 
 // contrario hay que colocarlos todas las funciones antes del main
 //*****************************************************************************
 
 void __interrupt() isr(void){
-    if(ADCON0bits.GO_DONE == 0){//Si se realizo una conversion levantamos la bandera (se ejecua en el loop)
-        ready = 1;
-        PIR1bits.ADIF = 0;
+    if(INTCONbits.RBIF == 1 && PORTBbits.RB1 == 1){ //interrupción del puerto b
+        PORTA++;
+        if(PORTA > 15){
+            PORTA = 0;
+        }
     }
+    if(INTCONbits.RBIF == 1 && PORTBbits.RB0 == 1){
+        if(PORTA == 0){
+            PORTA = 15;
+        }else{
+            PORTA--;
+        }
+    }
+    INTCONbits.RBIF = 0;
    if(PIR1bits.SSPIF == 1){ 
 
         SSPCONbits.CKP = 0;
@@ -74,7 +83,7 @@ void __interrupt() isr(void){
         }else if(!SSPSTATbits.D_nA && SSPSTATbits.R_nW){
             z = SSPBUF;
             BF = 0;
-            SSPBUF = PORTB;
+            SSPBUF = PORTA;
             SSPCONbits.CKP = 1;
             __delay_us(250);
             while(SSPSTATbits.BF);
@@ -84,26 +93,22 @@ void __interrupt() isr(void){
 }
 
 void main(void) {
-    ANSEL = 0b00000001;
+    ANSEL = 0;
     ANSELH = 0;
     
-    TRISA = 0b00000001;
-    TRISB = 0;
+    TRISA = 0;
+    TRISB = 0b00000011;
     TRISD = 0;
+    
+    IOCB = 0b00000011;
     
     PORTA = 0;
     PORTB = 0;
     PORTD = 0;
     
-    I2C_Slave_Init(0x50);
-    initADC(0);
+    I2C_Slave_Init(0x60);
 
     while(1){
-        if(ready){  //Guardamos el valor de la conversion
-            PORTB = ADRESH;
-            ready = 0;
-            ADCON0bits.GO_DONE = 1;
-        }
 
     }
     return;

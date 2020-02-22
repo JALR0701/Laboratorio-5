@@ -1,8 +1,8 @@
 /*
  * File:   main.c
- * Author: Pablo
+ * Author: Jorge Lorenzana
  * Ejemplo de uso de I2C Master
- * Created on 17 de febrero de 2020, 10:32 AM
+ * Created on 19 de febrero de 2020
  */
 //*****************************************************************************
 // Palabra de configuración
@@ -39,7 +39,7 @@
 //*****************************************************************************
 #define _XTAL_FREQ 4000000
 
-uint8_t enteroadc = 0, decimaladc = 0;
+uint8_t enteroadc = 0, decimaladc = 0, count = 0;
 float adc = 0, decimalfloatadc = 0;
 //*****************************************************************************
 // Definición de funciones para que se puedan colocar después del main de lo 
@@ -74,6 +74,12 @@ void main(void) {
         I2C_Master_Stop();
         __delay_ms(10);
         
+        I2C_Master_Start();
+        I2C_Master_Write(0x61);
+        count = I2C_Master_Read(0);
+        I2C_Master_Stop();
+        __delay_ms(10);
+        
         adc = adc * 5/255;
         enteroadc = adc;
         decimalfloatadc = (adc - enteroadc)*100;
@@ -89,6 +95,19 @@ void main(void) {
             lcd_write_int(decimaladc);
         }
         lcd_write_char('V');
+        
+        if(count < 10){
+            lcd_set_cursor(8,2);
+            lcd_write_string("00");
+            lcd_write_int(count);
+        } else if(count >= 10 && count < 100){
+            lcd_set_cursor(8,2);
+            lcd_write_string("0");
+            lcd_write_int(count);
+        }else{
+            lcd_set_cursor(8,2);
+            lcd_write_int(count);
+        }
     }
     return;
 }
