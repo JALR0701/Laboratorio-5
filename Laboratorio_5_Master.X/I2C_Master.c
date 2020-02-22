@@ -26,25 +26,28 @@
 // #pragma config statements should precede project file includes.
 // Use project enums instead of #define for ON and OFF.
 
-//*****************************************************************************
-// Definición e importación de librerías
-//*****************************************************************************
 #include <stdint.h>
 #include <pic16f887.h>
 #include "I2C_Init.h"
 #include "LCD_Init.h"
 #include <xc.h>
-//*****************************************************************************
-// Definición de variables
-//*****************************************************************************
+
 #define _XTAL_FREQ 4000000
 
-uint8_t enteroadc = 0, decimaladc = 0, count = 0;
+uint8_t enteroadc = 0, decimaladc = 0, count = 0, sec = 0, min = 0;
 float adc = 0, decimalfloatadc = 0;
-//*****************************************************************************
-// Definición de funciones para que se puedan colocar después del main de lo 
-// contrario hay que colocarlos todas las funciones antes del main
-//*****************************************************************************
+
+//************************************************************************************//
+//********************************circuitdigest.com***********************************//
+//************************************Aswinth Raj*************************************//
+//************************************************************************************//
+int  BCD_2_DEC(int to_convert) // Función para convertir BCD a decimal (el RTC trabaja con BCD)
+{
+   return (to_convert >> 4) * 10 + (to_convert & 0x0F); 
+}
+//************************************************************************************//
+//****************************************FIN*****************************************//
+//************************************************************************************//
 
 void main(void) {
     
@@ -57,21 +60,21 @@ void main(void) {
     PORTB = 0;
     PORTD = 0;
     initLCD(); //Inicializar LCD
-    I2C_Master_Init(100000);
+    I2C_Master_Init(100000); //Iniciar la función de master a una frecuencia de 100kHz
     lcd_clr();//Limpiar LCD
     lcd_set_cursor(2,1);//Posicionar cursor
     lcd_write_string ("ADC");//Escribir texto
     lcd_set_cursor(7,1);
-    lcd_write_string ("COUNT");
-    lcd_set_cursor(13,1);
-    lcd_write_string ("SNSR");
+    lcd_write_string ("CONT");
+    lcd_set_cursor(12,1);
+    lcd_write_string ("TIMER");
     
     while(1){        
         
-        I2C_Master_Start();
-        I2C_Master_Write(0x51);
-        adc = I2C_Master_Read(0);
-        I2C_Master_Stop();
+        I2C_Master_Start(); //Iniciar comunicación I2C
+        I2C_Master_Write(0x51); //Indicar a que dirección se va a comunicar (0 = escribir y 1 = leer)
+        adc = I2C_Master_Read(0); //Lee lo que haya en el SSPBUF
+        I2C_Master_Stop(); //Detiene la comunicación I2C
         __delay_ms(10);
         
         I2C_Master_Start();
@@ -80,7 +83,7 @@ void main(void) {
         I2C_Master_Stop();
         __delay_ms(10);
         
-        adc = adc * 5/255;
+        adc = adc * 5/255; //Convertir el dato recibido por el adc a enteros para facilitar mostrar en la LCD
         enteroadc = adc;
         decimalfloatadc = (adc - enteroadc)*100;
         decimaladc = decimalfloatadc;
@@ -88,7 +91,7 @@ void main(void) {
         lcd_set_cursor(1,2);
         lcd_write_int(enteroadc);
         lcd_write_char('.');
-        if (decimaladc >= 10){
+        if (decimaladc >= 10){ //Mostrar siempre 2 decimales
             lcd_write_int(decimaladc);
         }else{
             lcd_write_char('0');
@@ -96,17 +99,59 @@ void main(void) {
         }
         lcd_write_char('V');
         
-        if(count < 10){
-            lcd_set_cursor(8,2);
-            lcd_write_string("00");
-            lcd_write_int(count);
-        } else if(count >= 10 && count < 100){
+        if(count < 10){ //Mostrar siempre dos dígitos
             lcd_set_cursor(8,2);
             lcd_write_string("0");
             lcd_write_int(count);
         }else{
             lcd_set_cursor(8,2);
             lcd_write_int(count);
+        }
+//************************************************************************************//
+//********************************circuitdigest.com***********************************//
+//************************************Aswinth Raj*************************************//
+//************************************************************************************//
+        //Lectura del RTC
+       //START to Read
+       I2C_Master_Start();       
+       I2C_Master_Write(0xD0); 
+       I2C_Master_Write(0);    
+       I2C_Master_Stop(); 
+
+      //READ
+       I2C_Master_Start();
+       I2C_Master_Write(0xD1);                              // Initialize data read
+       sec = BCD_2_DEC(I2C_Master_Read(0));                 // Lectura de segundos
+       I2C_Master_Stop(); 
+
+       I2C_Master_Start();
+       I2C_Master_Write(0xD1);                              // Initialize data read
+       min = BCD_2_DEC(I2C_Master_Read(0));                 // Lectura de minutos
+       I2C_Master_Stop();  
+
+      //END Reading  
+        I2C_Master_Start();
+        I2C_Master_Write(0xD1);                              // Initialize data read
+        I2C_Master_Read(0);                                 // Lectura de fin de transmisión
+        I2C_Master_Stop();
+        
+//************************************************************************************//
+//****************************************FIN*****************************************//
+//************************************************************************************//
+        
+        lcd_set_cursor(12,2);
+        if(min<10){// Mostrar dos dígitos para los minutos
+            lcd_write_char('0');
+            lcd_write_int(min);
+        }else{
+            lcd_write_int(min);
+        }
+        lcd_write_char(':');
+        if(sec<10){// Mostrar dos dígitos para los segundos
+            lcd_write_char('0');
+            lcd_write_int(sec);
+        }else{
+            lcd_write_int(sec);
         }
     }
     return;

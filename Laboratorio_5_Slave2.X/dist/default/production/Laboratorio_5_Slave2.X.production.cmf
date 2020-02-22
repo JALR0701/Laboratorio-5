@@ -19,7 +19,7 @@ maintext CODE 0 A0 A0 1B 2
 cstackCOMMON COMMON 1 70 70 4 1
 intentry CODE 0 4 4 8 2
 bssCOMMON COMMON 1 74 74 2 1
-$C:\Users\jorge\AppData\Local\Temp\sfds.o
+$C:\Users\jorge\AppData\Local\Temp\sc4k.o
 reset_vec CODE 0 0 0 3 2
 end_init CODE 0 C C 3 2
 config CONFIG 0 2007 2007 2 2
@@ -69,13 +69,13 @@ STRING D5-1FFF 2
 # All other numeric values are in decimal.
 %LINETAB
 $dist/default/production\Laboratorio_5_Slave2.X.production.o
-F cinit CODE >647:C:\Users\jorge\AppData\Local\Temp\sfds.s
-F cinit CODE >650:C:\Users\jorge\AppData\Local\Temp\sfds.s
-F cinit CODE >664:C:\Users\jorge\AppData\Local\Temp\sfds.s
-10 cinit CODE >665:C:\Users\jorge\AppData\Local\Temp\sfds.s
-11 cinit CODE >671:C:\Users\jorge\AppData\Local\Temp\sfds.s
-11 cinit CODE >673:C:\Users\jorge\AppData\Local\Temp\sfds.s
-12 cinit CODE >674:C:\Users\jorge\AppData\Local\Temp\sfds.s
+F cinit CODE >647:C:\Users\jorge\AppData\Local\Temp\sc4k.s
+F cinit CODE >650:C:\Users\jorge\AppData\Local\Temp\sc4k.s
+F cinit CODE >664:C:\Users\jorge\AppData\Local\Temp\sc4k.s
+10 cinit CODE >665:C:\Users\jorge\AppData\Local\Temp\sc4k.s
+11 cinit CODE >671:C:\Users\jorge\AppData\Local\Temp\sc4k.s
+11 cinit CODE >673:C:\Users\jorge\AppData\Local\Temp\sc4k.s
+12 cinit CODE >674:C:\Users\jorge\AppData\Local\Temp\sc4k.s
 4 intentry CODE >47:C:\Users\jorge\MPLABXProjects\Laboratorio-5\Laboratorio_5_Slave2.X\I2C_Slave2.c
 15 text2 CODE >47:C:\Users\jorge\MPLABXProjects\Laboratorio-5\Laboratorio_5_Slave2.X\I2C_Slave2.c
 15 text2 CODE >48:C:\Users\jorge\MPLABXProjects\Laboratorio-5\Laboratorio_5_Slave2.X\I2C_Slave2.c
@@ -161,20 +161,20 @@ _BF 4A0 0 ABS 0 - dist/default/production\Laboratorio_5_Slave2.X.production.o
 __Hstrings 0 0 ABS 0 strings -
 _IOCB 96 0 ABS 0 - dist/default/production\Laboratorio_5_Slave2.X.production.o
 _PEIE 5E 0 ABS 0 - dist/default/production\Laboratorio_5_Slave2.X.production.o
-___sp 0 0 STACK 2 stack C:\Users\jorge\AppData\Local\Temp\sfds.o
+___sp 0 0 STACK 2 stack C:\Users\jorge\AppData\Local\Temp\sc4k.o
 _main 140 0 CODE 0 maintext dist/default/production\Laboratorio_5_Slave2.X.production.o
 btemp 7E 0 ABS 0 - dist/default/production\Laboratorio_5_Slave2.X.production.o
-start 18 0 CODE 0 init C:\Users\jorge\AppData\Local\Temp\sfds.o
+start 18 0 CODE 0 init C:\Users\jorge\AppData\Local\Temp\sc4k.o
 __CFG_BOREN$OFF 0 0 ABS 0 - dist/default/production\Laboratorio_5_Slave2.X.production.o
 __size_of_main 0 0 ABS 0 - dist/default/production\Laboratorio_5_Slave2.X.production.o
 __HbssCOMMON 0 0 ABS 0 bssCOMMON -
 __Hpowerup 0 0 CODE 0 powerup -
-intlevel0 0 0 ENTRY 0 functab C:\Users\jorge\AppData\Local\Temp\sfds.o
-intlevel1 0 0 ENTRY 0 functab C:\Users\jorge\AppData\Local\Temp\sfds.o
-intlevel2 0 0 ENTRY 0 functab C:\Users\jorge\AppData\Local\Temp\sfds.o
-intlevel3 0 0 ENTRY 0 functab C:\Users\jorge\AppData\Local\Temp\sfds.o
-intlevel4 0 0 ENTRY 0 functab C:\Users\jorge\AppData\Local\Temp\sfds.o
-intlevel5 0 0 ENTRY 0 functab C:\Users\jorge\AppData\Local\Temp\sfds.o
+intlevel0 0 0 ENTRY 0 functab C:\Users\jorge\AppData\Local\Temp\sc4k.o
+intlevel1 0 0 ENTRY 0 functab C:\Users\jorge\AppData\Local\Temp\sc4k.o
+intlevel2 0 0 ENTRY 0 functab C:\Users\jorge\AppData\Local\Temp\sc4k.o
+intlevel3 0 0 ENTRY 0 functab C:\Users\jorge\AppData\Local\Temp\sc4k.o
+intlevel4 0 0 ENTRY 0 functab C:\Users\jorge\AppData\Local\Temp\sc4k.o
+intlevel5 0 0 ENTRY 0 functab C:\Users\jorge\AppData\Local\Temp\sc4k.o
 __LbssCOMMON 0 0 ABS 0 bssCOMMON -
 wtemp0 7E 0 ABS 0 - dist/default/production\Laboratorio_5_Slave2.X.production.o
 __Hfunctab 0 0 ENTRY 0 functab -
@@ -182,8 +182,8 @@ __Hclrtext 0 0 ABS 0 clrtext -
 _ANSELH 189 0 ABS 0 - dist/default/production\Laboratorio_5_Slave2.X.production.o
 _SSPCONbits 14 0 ABS 0 - dist/default/production\Laboratorio_5_Slave2.X.production.o
 __Lmaintext 0 0 ABS 0 maintext -
-___stackhi 0 0 ABS 0 - C:\Users\jorge\AppData\Local\Temp\sfds.o
-___stacklo 0 0 ABS 0 - C:\Users\jorge\AppData\Local\Temp\sfds.o
+___stackhi 0 0 ABS 0 - C:\Users\jorge\AppData\Local\Temp\sc4k.o
+___stacklo 0 0 ABS 0 - C:\Users\jorge\AppData\Local\Temp\sc4k.o
 _I2C_Slave_Init 176 0 CODE 0 text1 dist/default/production\Laboratorio_5_Slave2.X.production.o
 __CFG_FCMEN$OFF 0 0 ABS 0 - dist/default/production\Laboratorio_5_Slave2.X.production.o
 __CFG_MCLRE$OFF 0 0 ABS 0 - dist/default/production\Laboratorio_5_Slave2.X.production.o
@@ -194,7 +194,7 @@ _SSPBUF 13 0 ABS 0 - dist/default/production\Laboratorio_5_Slave2.X.production.o
 _SSPCON 14 0 ABS 0 - dist/default/production\Laboratorio_5_Slave2.X.production.o
 _TRISC3 43B 0 ABS 0 - dist/default/production\Laboratorio_5_Slave2.X.production.o
 _TRISC4 43C 0 ABS 0 - dist/default/production\Laboratorio_5_Slave2.X.production.o
-___int_sp 0 0 STACK 2 stack C:\Users\jorge\AppData\Local\Temp\sfds.o
+___int_sp 0 0 STACK 2 stack C:\Users\jorge\AppData\Local\Temp\sc4k.o
 __Hbank0 0 0 ABS 0 bank0 -
 __Hbank1 0 0 ABS 0 bank1 -
 __Hbank2 0 0 ABS 0 bank2 -
@@ -243,7 +243,7 @@ saved_w 7E 0 ABS 0 - dist/default/production\Laboratorio_5_Slave2.X.production.o
 __CFG_FOSC$INTRC_NOCLKOUT 0 0 ABS 0 - dist/default/production\Laboratorio_5_Slave2.X.production.o
 __end_of_isr 140 0 CODE 0 text2 dist/default/production\Laboratorio_5_Slave2.X.production.o
 __Lintentry 8 0 CODE 0 intentry -
-reset_vec 0 0 CODE 0 reset_vec C:\Users\jorge\AppData\Local\Temp\sfds.o
+reset_vec 0 0 CODE 0 reset_vec C:\Users\jorge\AppData\Local\Temp\sc4k.o
 __pmaintext 140 0 CODE 0 maintext dist/default/production\Laboratorio_5_Slave2.X.production.o
 __Lcommon 0 0 ABS 0 common -
 __Lconfig 400E 0 CONFIG 0 config -

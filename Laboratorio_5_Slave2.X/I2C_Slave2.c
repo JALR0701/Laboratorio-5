@@ -47,12 +47,12 @@ uint8_t dato;
 void __interrupt() isr(void){
     if(INTCONbits.RBIF == 1 && PORTBbits.RB1 == 1){ //interrupción del puerto b
         PORTA++;
-        if(PORTA > 15){
+        if(PORTA > 15){//Delimitamos a un contador de 4 bits
             PORTA = 0;
         }
     }
     if(INTCONbits.RBIF == 1 && PORTBbits.RB0 == 1){
-        if(PORTA == 0){
+        if(PORTA == 0){//Delimitamos a un contador de 4 bits
             PORTA = 15;
         }else{
             PORTA--;

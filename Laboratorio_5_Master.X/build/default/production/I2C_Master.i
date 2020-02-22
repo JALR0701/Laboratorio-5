@@ -27,9 +27,6 @@
 
 
 
-
-
-
 # 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 1 3
 # 13 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\c90\\stdint.h" 3
 typedef signed char int8_t;
@@ -163,7 +160,7 @@ typedef int16_t intptr_t;
 
 
 typedef uint16_t uintptr_t;
-# 32 "I2C_Master.c" 2
+# 29 "I2C_Master.c" 2
 
 # 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\pic16f887.h" 1 3
 # 44 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.10\\pic\\include\\pic16f887.h" 3
@@ -2576,7 +2573,7 @@ extern volatile __bit nW __attribute__((address(0x4A2)));
 
 
 extern volatile __bit nWRITE __attribute__((address(0x4A2)));
-# 33 "I2C_Master.c" 2
+# 30 "I2C_Master.c" 2
 
 # 1 "./I2C_Init.h" 1
 # 14 "./I2C_Init.h"
@@ -2693,7 +2690,7 @@ unsigned short I2C_Master_Read(unsigned short a);
 
 
 void I2C_Slave_Init(uint8_t address);
-# 34 "I2C_Master.c" 2
+# 31 "I2C_Master.c" 2
 
 # 1 "./LCD_Init.h" 1
 # 12 "./LCD_Init.h"
@@ -2709,17 +2706,23 @@ void lcd_set_cursor(uint8_t posy, uint8_t posx);
 void lcd_write_char(char var);
 void lcd_write_string(char *var);
 void lcd_write_int(uint8_t numero);
-# 35 "I2C_Master.c" 2
+# 32 "I2C_Master.c" 2
 
 
 
 
 
-
-
-uint8_t enteroadc = 0, decimaladc = 0, count = 0;
+uint8_t enteroadc = 0, decimaladc = 0, count = 0, sec = 0, min = 0;
 float adc = 0, decimalfloatadc = 0;
 
+
+
+
+
+int BCD_2_DEC(int to_convert)
+{
+   return (to_convert >> 4) * 10 + (to_convert & 0x0F);
+}
 
 
 
@@ -2740,9 +2743,9 @@ void main(void) {
     lcd_set_cursor(2,1);
     lcd_write_string ("ADC");
     lcd_set_cursor(7,1);
-    lcd_write_string ("COUNT");
-    lcd_set_cursor(13,1);
-    lcd_write_string ("SNSR");
+    lcd_write_string ("CONT");
+    lcd_set_cursor(12,1);
+    lcd_write_string ("TIMER");
 
     while(1){
 
@@ -2776,15 +2779,57 @@ void main(void) {
 
         if(count < 10){
             lcd_set_cursor(8,2);
-            lcd_write_string("00");
-            lcd_write_int(count);
-        } else if(count >= 10 && count < 100){
-            lcd_set_cursor(8,2);
             lcd_write_string("0");
             lcd_write_int(count);
         }else{
             lcd_set_cursor(8,2);
             lcd_write_int(count);
+        }
+
+
+
+
+
+
+       I2C_Master_Start();
+       I2C_Master_Write(0xD0);
+       I2C_Master_Write(0);
+       I2C_Master_Stop();
+
+
+       I2C_Master_Start();
+       I2C_Master_Write(0xD1);
+       sec = BCD_2_DEC(I2C_Master_Read(0));
+       I2C_Master_Stop();
+
+       I2C_Master_Start();
+       I2C_Master_Write(0xD1);
+       min = BCD_2_DEC(I2C_Master_Read(0));
+       I2C_Master_Stop();
+
+
+        I2C_Master_Start();
+        I2C_Master_Write(0xD1);
+        I2C_Master_Read(0);
+        I2C_Master_Stop();
+
+
+
+
+
+        lcd_set_cursor(12,2);
+        if(min<10){
+            lcd_write_char('0');
+            lcd_write_int(min);
+        }else{
+            lcd_write_int(min);
+        }
+        lcd_write_char(':');
+        if(sec<10){
+            lcd_write_char('0');
+            lcd_write_int(sec);
+        }else{
+            lcd_write_int(sec);
         }
     }
     return;

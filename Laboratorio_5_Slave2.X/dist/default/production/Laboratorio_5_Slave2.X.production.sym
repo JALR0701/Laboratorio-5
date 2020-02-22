@@ -153,7 +153,7 @@ config 400E 4011 CONFIG 400E 0
 cstackCOMMON 70 75 COMMON 70 1
 %locals
 dist/default/production\Laboratorio_5_Slave2.X.production.o
-C:\Users\jorge\AppData\Local\Temp\sfds.s
+C:\Users\jorge\AppData\Local\Temp\sc4k.s
 647 F 0 CODE 0
 650 F 0 CODE 0
 664 F 0 CODE 0
